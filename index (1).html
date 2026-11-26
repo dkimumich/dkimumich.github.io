@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dylan Kim · Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly, nerdy, confident student portfolio
+   IDEA: a macOS terminal session you can scroll through
+   PICTURE: a live terminal window that "types" facts about you
+   COLOUR and TYPE: off-white page, teal prompt, indigo action, slate terminal; JetBrains Mono + IBM Plex Mono
+   LAYOUT: pill nav, centred hero, full-width terminal band, then experience, projects, interests, footer */
+:root{color-scheme:light dark;
+  --bg:light-dark(#f6f7f9,#12141c);--card:light-dark(#ffffff,#1b1e29);--ink:light-dark(#22252d,#e6e8ef);
+  --muted:light-dark(#5b6170,#a3a9b8);--line:light-dark(#e3e6ec,#2a2e3c);
+  --teal:light-dark(#0f7f7a,#3fd1c6);--indigo:light-dark(#00274c,#ffcb05);--onbtn:light-dark(#fff,#00274c);--orange:light-dark(#a87700,#ffcb05);--blue:light-dark(#00274c,#8fb4e3);
+  --term:#363b52;--termbar:#1e1f24;--termink:#e9ebf2;--termkey:#5ec8f2}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Mono",ui-monospace,Menlo,monospace;overflow-x:clip}
+a{color:inherit}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}
+.wrap{max-width:1040px;margin:0 auto}
+
+/* nav */
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px max(4vw,14px);background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px)}
+nav{display:flex;flex-wrap:wrap;gap:2px;background:var(--card);border-radius:999px;padding:6px 10px;box-shadow:0 4px 18px rgb(0 0 0/.07)}
+nav a{text-decoration:none;font-size:14px;padding:8px 10px;border-radius:999px;min-height:40px;display:inline-flex;align-items:center}
+nav a:hover,nav a:focus-visible{background:var(--line)}
+#theme{width:46px;height:46px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 18px rgb(0 0 0/.07)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* hero */
+.hero{text-align:center;padding-top:clamp(40px,8vw,96px);padding-bottom:clamp(40px,6vw,72px)}
+.hero h1{font:700 clamp(32px,6vw,52px)/1.05 "JetBrains Mono",monospace;color:var(--teal);margin:0 0 24px;text-wrap:balance}
+.hero h1 .cur{display:inline-block;width:.55em;height:.9em;background:var(--teal);vertical-align:-.08em;margin-left:.1em;animation:blink 1s steps(1) infinite}
+.hero p{font-size:clamp(16px,2.2vw,19px);max-width:62ch;margin:0 auto;color:var(--muted);text-wrap:balance}
+.hero .major{color:var(--blue)}.hero .school{color:var(--orange)}
+.btn{display:inline-flex;align-items:center;gap:10px;margin-top:32px;padding:14px 30px;border-radius:999px;background:var(--indigo);color:var(--onbtn);text-decoration:none;font-weight:600;font-size:17px;box-shadow:0 10px 28px rgb(0 39 76/.3)}
+.btn:hover{filter:brightness(1.1)}
+
+/* terminal */
+.term-band{padding:0;background:var(--term)}
+.term{max-width:1040px;margin:0 auto}
+.bar{background:var(--termbar);display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:18px 18px 0 0;color:#b9bcc6;font:500 15px "IBM Plex Mono",monospace}
+.term-band .bar{border-radius:0}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}.r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+.bar span:last-child{margin:0 auto;padding-right:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.screen{padding:28px clamp(18px,4vw,40px) 40px;color:var(--termink);font-size:15px;min-height:420px}
+.screen .login{color:#b6bacb;margin-bottom:28px}
+.cmd{color:var(--termkey);margin-top:22px}.cmd::before{content:"> ";}
+.out{padding-left:1.4em;white-space:pre-wrap;word-break:break-word}
+.out a{color:var(--termkey);text-decoration:underline dashed;text-underline-offset:4px}
+.caret{display:inline-block;width:9px;height:1.1em;background:var(--termink);vertical-align:-.2em;animation:blink 1s steps(1) infinite}
+
+/* sections */
+h2{font:700 clamp(26px,4vw,34px)/1.1 "JetBrains Mono",monospace;margin:0 0 28px}
+h2::before{content:"## ";color:var(--teal)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card h3{margin:0 0 4px;font-size:17px}
+.meta{color:var(--muted);font-size:14px;margin-bottom:10px}
+.card p{margin:0 0 12px;font-size:15px}
+.card ul{margin:0;padding-left:1.1em;font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tags span{font-size:13px;padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--teal) 14%,transparent);color:var(--teal)}
+.card .links a{font-size:14px;color:var(--blue);margin-right:14px}
+.timeline{border-left:2px solid var(--line);margin-left:6px;padding-left:24px;display:grid;gap:22px}
+.timeline .card{position:relative}
+.timeline .card::before{content:"";position:absolute;left:-32px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px var(--bg)}
+.interests{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:18px}
+.interests .card .big{font:700 30px "JetBrains Mono",monospace;color:var(--teal)}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:40px 16px 56px;border-top:1px solid var(--line)}
+footer .row{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;margin-bottom:10px}
+.sample{font-size:13px;color:var(--muted);text-align:center;margin:0}
+
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+@media(max-width:600px){nav a{font-size:13px;padding:6px 7px}.bar span:last-child{padding-right:0}.screen{font-size:14px}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="Main">
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#leadership">Leadership</a>
+    <a href="https://github.com/dkimumich">GitHub</a>
+  </nav>
+  <button id="theme" aria-label="Toggle dark mode">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+</header>
+
+<section class="band hero" id="top">
+  <h1>&gt; Hi, I'm Dylan!<span class="cur" aria-hidden="true"></span></h1>
+  <p>I'm studying <span class="major">Data Science</span> at the <span class="school">University of Michigan</span>. I use data and software to turn hard problems into simple, creative solutions.</p>
+  <a class="btn" href="resume.pdf" target="_blank" rel="noopener">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></svg>
+    Resume
+  </a>
+</section>
+
+<section class="term-band" aria-label="About me terminal">
+  <div class="term">
+    <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span>📁 dylankim — 80×24</span></div>
+    <div class="screen" id="screen" aria-live="off">
+      <div class="login" id="login"></div>
+      <div id="lines"></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="experience">
+  <div class="wrap">
+    <h2>Experience</h2>
+    <div class="timeline" id="exp"></div>
+  </div>
+</section>
+
+<section class="band" id="projects" style="padding-top:0">
+  <div class="wrap">
+    <h2>Projects</h2>
+    <div class="grid" id="proj"></div>
+  </div>
+</section>
+
+<section class="band" id="leadership" style="padding-top:0">
+  <div class="wrap">
+    <h2>Leadership</h2>
+    <div class="interests" id="int"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="row">
+    <a href="mailto:dylankim@umich.edu">dylankim@umich.edu</a>
+    <a href="https://www.linkedin.com/in/dylan-kim-02aa13334">LinkedIn</a>
+    <a href="https://github.com/dkimumich">GitHub</a>
+  </div>
+  © <span id="yr"></span> Dylan Kim · Built with plain HTML &amp; CSS
+</footer>
+
+<script>
+{
+/* ======= EDIT YOUR INFO HERE ======= */
+const ME = "DylanKim";
+const terminal = [
+  ["currentLocation", '"New York, NY"'],
+  ["contactInfo", '["dylankim@umich.edu", "<a href=\'https://www.linkedin.com/in/dylan-kim-02aa13334\'>LinkedIn</a>", "<a href=\'https://github.com/dkimumich\'>GitHub</a>"]'],
+  ["education", '"B.S. Data Science, University of Michigan (May 2028)"'],
+  ["languages", '["Python", "Java", "C/C++", "SQL", "TypeScript", "JavaScript"]'],
+  ["libraries", '["pandas", "NumPy", "PyTorch", "scikit-learn", "TensorFlow", "Hugging Face"]'],
+];
+const experience = [
+  {role:"Product Manager", org:"MProduct", when:"Sep 2026 – present", pts:["Write technical requirements and support testing for feature updates on a student event-discovery app","Work in Agile sprints with a 5-person cross-functional engineering team"]},
+  {role:"Research Engineer", org:"Algoverse AI Research", when:"May 2025 – Mar 2026", pts:["Trained and evaluated AI/ML models in Python, improving bias-detection accuracy 25% across 10+ datasets with embedding-based evaluation","Built a Python automation pipeline for recurring experiments, cutting runtime 40% across 1,000+ prompts","Validated outputs across 3+ fairness metrics, reducing bias score 20% through systematic experimentation"]},
+];
+const projects = [
+  {name:"SkillGap", desc:"Scores how well a resume matches a job posting (0–100) and lists the skills you're missing, combining synonym-aware skill coverage with TF-IDF similarity. Served as a FastAPI app on AWS Lambda, auto-deployed by GitHub Actions, with 52 tests at 100% coverage.", tags:["Python","scikit-learn","FastAPI","AWS Lambda","Docker","GitHub Actions"], code:"https://github.com/dkimumich/SkillGap", demo:"https://fsx5xni654.execute-api.us-east-2.amazonaws.com/docs"},
+  {name:"Fakebook Database System", when:"Sep – Oct 2026", desc:"Relational schema with foreign keys, triggers and transactions, plus a Java/JDBC data layer that pushes joins, aggregation and sorting into optimized Oracle SQL.", tags:["Java","SQL","Oracle","Linux"]},
+  {name:"Cache & Pipeline Processor Simulator", when:"Apr 2026", desc:"Configurable cache simulator in C (size, associativity, memory layout) verified against reference traces, debugged alongside a pipelined processor simulator.", tags:["C","Computer architecture"]},
+  {name:"Drone Delivery Route Simulator", when:"Nov – Dec 2025", desc:"Handles 10,000+ delivery points with minimum spanning trees; a greedy TSP heuristic plus branch-and-bound solver beats a naive baseline by 25%.", tags:["C++","Algorithms","Git"]},
+];
+const leadership = [
+  {big:"MDST", label:"Michigan Data Science Team", when:"Sep 2024 – May 2026", note:"Cut forecast error 25% with a demand-forecasting model on 1,000+ ride records; helped a 10-person team reach 90% accuracy on a facial recognition pipeline."},
+  {big:"MAT", label:"Michigan Algorithmic Traders", when:"Sep 2026 – present", note:"Reproduce quant finance research in statistical arbitrage and risk management against real-time market data."},
+];
+/* =================================== */
+
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+document.getElementById("exp").innerHTML = experience.map(e=>`<div class="card"><h3>${esc(e.role)}</h3><div class="meta">${esc(e.org)} · ${esc(e.when)}</div><ul>${e.pts.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div>`).join("");
+document.getElementById("proj").innerHTML = projects.map(p=>`<div class="card"><h3>${esc(p.name)}</h3>${p.when?`<div class="meta">${esc(p.when)}</div>`:""}<p>${esc(p.desc)}</p><div class="links">${p.code?`<a href="${p.code}" target="_blank" rel="noopener">Code →</a>`:""}${p.demo?`<a href="${p.demo}" target="_blank" rel="noopener">Live demo →</a>`:""}</div><div class="tags">${p.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div>`).join("");
+document.getElementById("int").innerHTML = leadership.map(i=>`<div class="card"><div class="big">${esc(i.big)}</div><h3>${esc(i.label)}</h3><div class="meta">${esc(i.when)}</div><p style="margin:0">${esc(i.note)}</p></div>`).join("");
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* last-login line */
+const d = new Date();
+const login = d.toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric"}).replace(",","") + " " + d.toTimeString().slice(0,8);
+document.getElementById("login").textContent = `Last login: ${login} on console`;
+
+/* typing terminal */
+const lines = document.getElementById("lines");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const caret = '<span class="caret"></span>';
+const render = (n, partial) => {
+  lines.innerHTML = terminal.slice(0,n).map(([k,v])=>`<div class="cmd">${ME}.${k}</div><div class="out">${v}</div>`).join("")
+    + (partial!=null ? `<div class="cmd">${partial}${caret}</div>` : `<div class="cmd">${caret}</div>`);
+};
+if (reduce) { render(terminal.length); }
+else {
+  let i = 0;
+  const typeNext = () => {
+    if (i >= terminal.length) { render(i); return; }
+    const text = `${ME}.${terminal[i][0]}`;
+    let c = 0;
+    const t = setInterval(() => {
+      c++; render(i, text.slice(0,c));
+      if (c >= text.length) { clearInterval(t); setTimeout(()=>{ i++; render(i); setTimeout(typeNext, 450); }, 250); }
+    }, 45);
+  };
+  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); typeNext(); } }, {threshold:.3});
+  render(0); io.observe(lines);
+}
+
+/* theme toggle */
+const root = document.documentElement;
+try { const s = localStorage.getItem("theme"); if (s) root.dataset.theme = s; } catch(e) {}
+document.getElementById("theme").addEventListener("click", () => {
+  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.setItem("theme", root.dataset.theme); } catch(e) {}
+});
+}
+</script>
+</body>
+</html>
