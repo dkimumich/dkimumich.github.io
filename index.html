@@ -162,6 +162,7 @@ const experience = [
   {role:"Research Engineer", org:"Algoverse AI Research", when:"May 2025 – Mar 2026", pts:["Trained and evaluated AI/ML models in Python, improving bias-detection accuracy 25% across 10+ datasets with embedding-based evaluation","Built a Python automation pipeline for recurring experiments, cutting runtime 40% across 1,000+ prompts","Validated outputs across 3+ fairness metrics, reducing bias score 20% through systematic experimentation"]},
 ];
 const projects = [
+  {name:"SkillGap", desc:"Scores how well a resume matches a job posting (0–100) and lists the skills you're missing, combining synonym-aware skill coverage with TF-IDF similarity. Served as a FastAPI app on AWS Lambda, auto-deployed by GitHub Actions, with 52 tests at 100% coverage.", tags:["Python","scikit-learn","FastAPI","AWS Lambda","Docker","GitHub Actions"], code:"https://github.com/dkimumich/SkillGap", demo:"https://fsx5xni654.execute-api.us-east-2.amazonaws.com/docs"},
   {name:"Fakebook Database System", when:"Sep – Oct 2026", desc:"Relational schema with foreign keys, triggers and transactions, plus a Java/JDBC data layer that pushes joins, aggregation and sorting into optimized Oracle SQL.", tags:["Java","SQL","Oracle","Linux"]},
   {name:"Cache & Pipeline Processor Simulator", when:"Apr 2026", desc:"Configurable cache simulator in C (size, associativity, memory layout) verified against reference traces, debugged alongside a pipelined processor simulator.", tags:["C","Computer architecture"]},
   {name:"Drone Delivery Route Simulator", when:"Nov – Dec 2025", desc:"Handles 10,000+ delivery points with minimum spanning trees; a greedy TSP heuristic plus branch-and-bound solver beats a naive baseline by 25%.", tags:["C++","Algorithms","Git"]},
@@ -174,7 +175,7 @@ const leadership = [
 
 const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
 document.getElementById("exp").innerHTML = experience.map(e=>`<div class="card"><h3>${esc(e.role)}</h3><div class="meta">${esc(e.org)} · ${esc(e.when)}</div><ul>${e.pts.map(p=>`<li>${esc(p)}</li>`).join("")}</ul></div>`).join("");
-document.getElementById("proj").innerHTML = projects.map(p=>`<div class="card"><h3>${esc(p.name)}</h3><div class="meta">${esc(p.when)}</div><p>${esc(p.desc)}</p><div class="links">${p.code?`<a href="${p.code}">Code →</a>`:""}${p.demo?`<a href="${p.demo}">Live demo →</a>`:""}</div><div class="tags">${p.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div>`).join("");
+document.getElementById("proj").innerHTML = projects.map(p=>`<div class="card"><h3>${esc(p.name)}</h3>${p.when?`<div class="meta">${esc(p.when)}</div>`:""}<p>${esc(p.desc)}</p><div class="links">${p.code?`<a href="${p.code}" target="_blank" rel="noopener">Code →</a>`:""}${p.demo?`<a href="${p.demo}" target="_blank" rel="noopener">Live demo →</a>`:""}</div><div class="tags">${p.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div>`).join("");
 document.getElementById("int").innerHTML = leadership.map(i=>`<div class="card"><div class="big">${esc(i.big)}</div><h3>${esc(i.label)}</h3><div class="meta">${esc(i.when)}</div><p style="margin:0">${esc(i.note)}</p></div>`).join("");
 document.getElementById("yr").textContent = new Date().getFullYear();
 
